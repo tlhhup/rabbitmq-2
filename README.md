@@ -1,6 +1,6 @@
 # rabbitmq-2
 rabbit和spring整合
-##
+## 发送
 1. 整合
 	1. 引入jar包
 
@@ -43,3 +43,34 @@ rabbit和spring整合
 	1. 配置文件中不能使用分离配置文件的方式设置连接的信息
 	2. **使用AmqpTemplate发送消息时**，如果带exchange、queue，则这些信息必须在配置文件中先声明
 	3. 发送消息时：消息的内容得先转换成byte[]再进行传输
+
+## 接收
+3. 接受者
+	1. 发送者采用direct方式发送数据
+		1. 连接订阅信息
+
+
+				ConnectionFactory factory = new ConnectionFactory();
+				factory.setHost(hostName);
+				factory.setUsername(userName);
+				factory.setPassword(password);
+				factory.setPort(portNumber);
+				//创建连接
+				Connection connection = factory.newConnection();
+				Channel channel = connection.createChannel();
+				//声明exchange
+				//channel.exchangeDeclare(exchangeName, "direct",true);
+				//申明队列
+				channel.queueDeclare(queueName, true, false, false, null);
+				//channel.queueBind(queueName, exchangeName, routekey);
+				QueueingConsumer consumer = new QueueingConsumer(channel);
+				//接受指定消息队列中的数据
+				channel.basicConsume(queueName, true, consumer);
+		2. 处理信息
+
+				Delivery delivery = consumer.nextDelivery();
+				String message=new String(delivery.getBody());
+				System.out.println("接收到的数据为："+message);
+				consumer.handleRecoverOk(consumer.getConsumerTag());
+2. 注意事项
+	1. 如果是direct方式发送数据，订阅的路由要和发送的路由一致

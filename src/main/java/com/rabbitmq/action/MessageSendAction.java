@@ -14,7 +14,7 @@ import com.rabbitmq.entity.Message;
 @RequestMapping("/MessageSendAction")
 public class MessageSendAction {
 	
-	@Value("routekey")
+	@Value("route1")
 	private String routekey;
 	
 	@Resource
@@ -23,7 +23,8 @@ public class MessageSendAction {
 	@RequestMapping("/send")
 	public String send(Model model,Message message){
 		//将发送的数据转换成rabbit的message对象，但是其body为byte[]古取传递字节数组
-		this.amqpTemplate.convertAndSend("queueName",routekey, message.getContent().getBytes());
+		//指定exchange和路由值
+		this.amqpTemplate.convertAndSend("exchange",routekey, message.getContent().getBytes());
 		return "index";
 	}
 	
