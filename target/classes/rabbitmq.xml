@@ -1,0 +1,26 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+    	   http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context-4.2.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<context:property-placeholder location="classpath:rabbitmq.properties"/>
+    
+	<!-- 定义连接工厂bean -->
+	<rabbit:connection-factory id="connectionFactory" host="localhost" port="5672" username="guest" password="guest" channel-cache-size="25"/>
+	<!-- 不能是否配置文件方式引入 -->
+	<!-- <rabbit:connection-factory id="connectionFactory" host="${hostName}" port="${portNumber}" username="${userName}" password="${password}" channel-cache-size="25"/> -->
+	<!-- 配置消息发送器 -->
+	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"/>
+	<!-- 定义代理：管理exchange和queue以及绑定 -->
+	<rabbit:admin connection-factory="connectionFactory"/>
+	<!-- 定义exchange -->
+	<rabbit:direct-exchange name="exchange"/>
+	<!-- 申明队列：用于接收数据 -->
+	<rabbit:queue name="queueName"/>
+</beans>
