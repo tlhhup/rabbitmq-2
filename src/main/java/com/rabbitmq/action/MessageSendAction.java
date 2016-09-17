@@ -17,6 +17,9 @@ public class MessageSendAction {
 	@Value("${routekey}")
 	private String routekey;
 	
+	@Value("${exchangeName}")
+	private String exchangeName;
+	
 	@Resource
 	private AmqpTemplate amqpTemplate;
 
@@ -24,7 +27,7 @@ public class MessageSendAction {
 	public String send(Model model,Message message){
 		//将发送的数据转换成rabbit的message对象，但是其body为byte[]古取传递字节数组
 		//指定exchange和路由值
-		this.amqpTemplate.convertAndSend("exchange",routekey, message.getContent().getBytes());
+		this.amqpTemplate.convertAndSend(exchangeName,routekey, message.getContent().getBytes());
 		return "index";
 	}
 	
