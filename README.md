@@ -74,3 +74,5 @@ rabbit和spring整合
 				consumer.handleRecoverOk(consumer.getConsumerTag());
 2. 注意事项
 	1. 如果是direct方式发送数据，订阅的路由要和发送的路由一致
+	2. 使用@Value注解注入数据时(${属性名})，注意该属性所有的bean是由谁创建的，则该属性所在的配置文件就由谁管理。如：routedKey所在的Message
+	SendAction由springmvc创建，则属性文件配置在springmvc的配置文件中
