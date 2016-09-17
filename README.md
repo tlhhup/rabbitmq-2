@@ -58,10 +58,11 @@ rabbit和spring整合
 				//创建连接
 				Connection connection = factory.newConnection();
 				Channel channel = connection.createChannel();
-				//声明exchange
+				//声明exchange-->和发送端使用同一exchange
 				//channel.exchangeDeclare(exchangeName, "direct",true);
 				//申明队列
 				channel.queueDeclare(queueName, true, false, false, null);
+				//将队列和发送端的exchange进行绑定
 				//channel.queueBind(queueName, exchangeName, routekey);
 				QueueingConsumer consumer = new QueueingConsumer(channel);
 				//接受指定消息队列中的数据
@@ -71,8 +72,10 @@ rabbit和spring整合
 				Delivery delivery = consumer.nextDelivery();
 				String message=new String(delivery.getBody());
 				System.out.println("接收到的数据为："+message);
+				//标识数据接收完毕
 				consumer.handleRecoverOk(consumer.getConsumerTag());
 2. 注意事项
 	1. 如果是direct方式发送数据，订阅的路由要和发送的路由一致
 	2. 使用@Value注解注入数据时(${属性名})，注意该属性所有的bean是由谁创建的，则该属性所在的配置文件就由谁管理。如：routedKey所在的Message
 	SendAction由springmvc创建，则属性文件配置在springmvc的配置文件中
+	3. **使用direct的exchange时**，发送端得使用特定的routedkey发送信息，并且接收端需要使用queue来绑定到发送端的exchange上面并使用特定的routedkey，这样才能保证数据接收到
