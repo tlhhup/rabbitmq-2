@@ -9,8 +9,6 @@
            http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<context:property-placeholder location="classpath:rabbitmq.properties"/>
-    
 	<!-- 定义连接工厂bean -->
 	<rabbit:connection-factory id="connectionFactory" host="localhost" port="5672" username="guest" password="guest" channel-cache-size="25"/>
 	<!-- 不能是否配置文件方式引入 -->

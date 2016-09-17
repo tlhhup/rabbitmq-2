@@ -14,7 +14,7 @@ import com.rabbitmq.entity.Message;
 @RequestMapping("/MessageSendAction")
 public class MessageSendAction {
 	
-	@Value("route1")
+	@Value("${routekey}")
 	private String routekey;
 	
 	@Resource
