@@ -79,3 +79,7 @@ rabbit和spring整合
 	2. 使用@Value注解注入数据时(${属性名})，注意该属性所有的bean是由谁创建的，则该属性所在的配置文件就由谁管理。如：routedKey所在的Message
 	SendAction由springmvc创建，则属性文件配置在springmvc的配置文件中
 	3. **使用direct的exchange时**，发送端得使用特定的routedkey发送信息，并且接收端需要使用queue来绑定到发送端的exchange上面并使用特定的routedkey，这样才能保证数据接收到
+
+## Commons Daemon
+Commons Daemon是可以帮你实现将一个普通的 Java 应用变成系统的一个后台服务。
+http://commons.apache.org/proper/commons-daemon/binaries.html
